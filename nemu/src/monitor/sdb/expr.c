@@ -108,8 +108,8 @@ static bool make_token(char *e) {
 	char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
 
-	Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-            i, rules[i].regex, position, substr_len, substr_len, substr_start);
+	// Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+    //         i, rules[i].regex, position, substr_len, substr_len, substr_start);
 
         position += substr_len;
 
@@ -122,7 +122,7 @@ static bool make_token(char *e) {
 	{
 		if(substr_len > MAX_TOKEN_LEN)
 		{
-			printf(ANSI_FG_YELLOW"The length of the token is too long!\n"ANSI_NONE);
+			printf(ANSI_FG_YELLOW"The length of the token is out of range!\n"ANSI_NONE);
 			return false;
 		}
 
@@ -163,6 +163,9 @@ static bool make_token(char *e) {
   return true;
 }
 
+/* Check if the expression is surrounded by a pair of parentheses 
+   (which means a left bracket and a right bracket, and the two brackets are matched)
+   */
 static bool check_parentheses(int l, int r, bool *success)
 {
 	if(tokens[l].type != TK_LBRACKET || tokens[r].type != TK_RBRACKET)
@@ -187,7 +190,7 @@ static bool check_parentheses(int l, int r, bool *success)
 		}
 
 	}
-	
+
 	if(cnt != 0)
 	{
 		printf("Invalid expression at %s(line %d)!\n", __func__, __LINE__);
@@ -202,7 +205,7 @@ static sword_t eval(int l, int r, bool *success)
 	if(l > r)
 	{
 		printf("Invalid expression at %s(line %d)!\n", __func__, __LINE__);
-		success = false;
+		*success = false;
 		return 0;
 	}
 	else if(l == r)
@@ -262,6 +265,12 @@ static sword_t eval(int l, int r, bool *success)
 						op_pos = i;
 					}
 				}
+			}
+			else
+			{
+				Log("Number of left brackets is not equal to right brackets!\n");
+				*success = false;
+				return 0;
 			}
 		}
 		if(op_pos == -1)

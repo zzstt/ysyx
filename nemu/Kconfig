@@ -151,6 +151,38 @@ config ITRACE_COND
   string "Only trace instructions when the condition is true"
   default "true"
 
+config IRINGBUF
+  depends on ITRACE
+  bool "Enable instruction ring buffer"
+  default n
+
+config MTRACE
+  depends on TRACE
+  bool "Enable memory tracer"
+  default n
+
+config MTRACE_START
+  depends on MTRACE
+  hex "When memory tracing is enabled"
+  range 0x80000000 0x88000000
+  default 0x80000000
+
+config MTRACE_END
+  depends on MTRACE
+  hex "When memory tracing is disabled"
+  range 0x80000000 0x88000000
+  default 0x88000000
+
+config FTRACE
+  depends on TRACE
+  bool "Enable function tracer"
+  default n
+
+config DTRACE
+  depends on TRACE
+  bool "Enable data tracer"
+  default n
+
 
 config DIFFTEST
   depends on TARGET_NATIVE_ELF
@@ -159,6 +191,10 @@ config DIFFTEST
   help
     Enable differential testing with a reference design.
     Note that this will significantly reduce the performance of NEMU.
+
+config WATCHPOINT
+  bool "Enable watchpoint"
+  default n
 
 choice
   prompt "Reference design"

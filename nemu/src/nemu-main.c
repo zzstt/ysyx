@@ -15,9 +15,13 @@
 
 #include <common.h>
 
+// test expr
+// #include "../tools/gen-expr/expr_test.h"
+
 void init_monitor(int, char *[]);
 void am_init_monitor();
 void engine_start();
+void close_device();
 int is_exit_status_bad();
 
 int main(int argc, char *argv[]) {
@@ -27,8 +31,13 @@ int main(int argc, char *argv[]) {
 #else
 	init_monitor(argc, argv);
 #endif
+	// test expr
+	// expr_test_main(1,1000);
+
 	/* Start engine. */
 	engine_start();
+
+	close_device();
 
 	return is_exit_status_bad();
 }

@@ -30,6 +30,10 @@ void init_disk();
 void init_sdcard();
 void init_alarm();
 
+void free_map();
+void clean_sdl_vga();
+void clean_sdl_audio();
+
 void send_key(uint8_t, bool);
 void vga_update_screen();
 
@@ -73,8 +77,16 @@ void sdl_clear_event_queue() {
 #endif
 }
 
+void close_device()
+{
+	IFDEF(CONFIG_HAS_VGA, clean_sdl_vga());
+  	IFDEF(CONFIG_HAS_AUDIO, clean_sdl_audio());
+	IFDEF(CONFIG_DEVICE, free_map());
+	IFDEF(CONFIG_DEVICE, SDL_Quit());
+}
+
 void init_device() {
-  IFDEF(CONFIG_TARGET_AM, ioe_init());
+  IFDEF(CONFIG_TARGET_AM, ioe_init());	// I can't find the declaration of this function
   init_map();
 
   IFDEF(CONFIG_HAS_SERIAL, init_serial());
