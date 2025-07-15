@@ -23,9 +23,29 @@ const char *regs[] = {
   "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
 };
 
-void isa_reg_display() {
+void isa_reg_display() 
+{
+    printf("pc              0x%-20x%u\n", cpu.pc, cpu.pc);
+    for (int i = 0; i < 32; i++) 
+    {
+        printf("%-16s0x%-20x%u\n", regs[i], cpu.gpr[i], cpu.gpr[i]);
+    }
 }
 
-word_t isa_reg_str2val(const char *s, bool *success) {
-  return 0;
+word_t isa_reg_str2val(const char *s, bool *success) 
+{
+	if (strcmp(s + 1, "pc") == 0) 
+	{
+		return cpu.pc;
+	}
+	for (int i = 0; i < 32; i++) 
+	{
+		if (strcmp(s + 1, regs[i]) == 0) 
+		{
+			*success = true;
+			return cpu.gpr[i];
+		}
+	}
+	*success = false;
+	return 0;
 }
