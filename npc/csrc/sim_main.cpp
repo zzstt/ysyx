@@ -1,31 +1,37 @@
-#include <Vtop.h>
-#include <nvboard.h>
+#include <verilated.h>
+#include "VTop.h"
+#include "sim.h"
 
-void nvboard_bind_all_pins(Vtop* top);
-
-static Vtop top;
-
-void single_cycle() {
-	top.clk = 0; top.eval();
-	top.clk = 1; top.eval();
+void ebreak_handler(int inst_ebreak)
+{
+	
 }
 
-void reset(int n) {
-	top.rst = 1;
-	while (n-- > 0) single_cycle();
-	top.rst = 0;
+int check(VTop * top)
+{
+
 }
+
+
 
 int main()
 {
-	nvboard_bind_all_pins(&top);
-	nvboard_init();
-	reset(10);
-	while(1) {
-		nvboard_update();
-		single_cycle();
-	}
-	nvboard_quit();
+	VTop * top = new VTop;
 
-	return 0;
+	top->clock = 0;
+	top->reset = 1;
+	top->eval();
+	top->reset = 0;
+
+	while(1)
+	{
+		top->io_instr = InstFetch(InstAddressTrans(top->io_pc));
+		top->clock = !top->clock;
+		top->eval();
+		if(check(top))
+		{
+			std::cout << "Error" << std::endl;
+			break;
+		}
+	}
 }

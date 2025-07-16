@@ -31,13 +31,11 @@ int main(int argc, char *argv[]) {
 #else
 	init_monitor(argc, argv);
 #endif
-	// test expr
-	// expr_test_main(1,1000);
 
 	/* Start engine. */
 	engine_start();
 
-	close_device();
+	IFDEF(CONFIG_DEVICE, close_device());
 
 	return is_exit_status_bad();
 }
