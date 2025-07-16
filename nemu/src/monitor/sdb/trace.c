@@ -4,6 +4,7 @@
 #include <string.h>
 #include <elf.h>
 #include <cpu/decode.h>
+#include <isa.h>
 
 #ifdef CONFIG_ITRACE 
 void inst_log(Decode * s)
@@ -185,5 +186,13 @@ void trace_func(paddr_t addr, int op)
 void trace_device(paddr_t addr, int len, IOMap * map, int is_write)
 {
 	Log("SDB: (pc=" FMT_PADDR ") %s %d bytes from device %s at address " FMT_PADDR, cpu.pc, is_write ? "write" : "read", len, map->name, addr);
+}
+#endif
+
+#ifdef CONFIG_ETRACE
+void trace_trap(Decode *s)
+{
+	if(s->dnpc == cpu.csr[MTVEC])
+		log_write("SDB: (mcause = " FMT_WORD ") Hit trap at " FMT_WORD ", jump to " FMT_WORD "\n",cpu.csr[MCAUSE], s->pc, s->dnpc);
 }
 #endif

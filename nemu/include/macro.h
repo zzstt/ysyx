@@ -38,6 +38,10 @@
 // macro testing
 // See https://stackoverflow.com/questions/26099745/test-if-preprocessor-symbol-is-defined-inside-macro
 #define CHOOSE2nd(a, b, ...) b
+// A format parameter must be a identifier, thus, a whitespace is illegal.
+// "contain_comma a" contains spaces, which the preprocessor may treat as 
+// two separate identifiers, "contain_comma" and "b", 
+// rather than as a single argument.
 #define MUX_WITH_COMMA(contain_comma, a, b) CHOOSE2nd(contain_comma a, b)
 #define MUX_MACRO_PROPERTY(p, macro, a, b) MUX_WITH_COMMA(concat(p, macro), a, b)
 // define placeholders for some property
@@ -87,6 +91,7 @@
 #define BITS(x, hi, lo) (((x) >> (lo)) & BITMASK((hi) - (lo) + 1)) // similar to x[hi:lo] in verilog
 #define BITCAT(x,y,len) (((uint64_t)(x) << (len)) | (uint64_t)(y)) 
 #define SEXT(x, len) ({ struct { int64_t n : len; } __x = { .n = x }; (uint64_t)__x.n; })
+#define ZEXT(x, len) ({ struct { uint64_t n : len; } __x = { .n = x }; (uint64_t)__x.n; })
 
 #define ROUNDUP(a, sz)   ((((uintptr_t)a) + (sz) - 1) & ~((sz) - 1))
 #define ROUNDDOWN(a, sz) ((((uintptr_t)a)) & ~((sz) - 1))
