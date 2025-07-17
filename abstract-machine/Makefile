@@ -51,7 +51,6 @@ DST_DIR   = $(WORK_DIR)/build/$(ARCH)
 $(shell mkdir -p $(DST_DIR) build/disasm_file)
 
 ### Compilation targets (a binary image or archive)
-#### put disassembly file into a separate directory(modified by hululu)
 DISASM	  = $(abspath build/disasm_file/$(NAME)-$(ARCH))
 IMAGE_REL = build/$(NAME)-$(ARCH)
 IMAGE     = $(abspath $(IMAGE_REL))
