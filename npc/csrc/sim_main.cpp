@@ -1,37 +1,28 @@
-#include <verilated.h>
-#include "VTop.h"
-#include "sim.h"
+#include "utils.h"
+#include <common.h>
 
-void ebreak_handler(int inst_ebreak)
+void init_sim(int argc, char **argv);
+void monitor_start();
+
+int is_exit_status_bad()
 {
-	
-}
-
-int check(VTop * top)
-{
-
-}
-
-
-
-int main()
-{
-	VTop * top = new VTop;
-
-	top->clock = 0;
-	top->reset = 1;
-	top->eval();
-	top->reset = 0;
-
-	while(1)
+	if(npc_state.state == NPC_QUIT || (npc_state.state == NPC_END && npc_state.halt_ret == 0))
 	{
-		top->io_instr = InstFetch(InstAddressTrans(top->io_pc));
-		top->clock = !top->clock;
-		top->eval();
-		if(check(top))
-		{
-			std::cout << "Error" << std::endl;
-			break;
-		}
+		std::cout << ANSI_FG_GREEN << "Exiting NPC..." << ANSI_NONE << std::endl;
+		return 0;
 	}
+	else
+	{
+		std::cout << ANSI_FG_RED << "Exiting NPC with ERROR..." << ANSI_NONE << std::endl;
+		return 1;
+	}
+}
+
+int main(int argc, char *argv[])
+{
+	init_sim(argc, argv);
+
+	monitor_start();
+
+	return is_exit_status_bad();
 }

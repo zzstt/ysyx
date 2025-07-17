@@ -13,18 +13,21 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
+#include <utils.h>
 #include <isa.h>
-#include <cpu/cpu.h>
+#include <debug.h>
+#include <mem.h>
+#include <sdb.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include "common.h"
-#include "memory/paddr.h"
-#include "sdb.h"
-#include "utils.h"
+
+#define NR_CMD ARRLEN(cmd_table)
 
 static int is_batch_mode = false;
 
 void init_regex();
+word_t expr(char *e, bool *success);
+void sim_step(uint64_t n);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() 
@@ -37,7 +40,7 @@ static char* rl_gets()
 		line_read = NULL;
 	}
 
-	line_read = readline("(nemu) ");
+	line_read = readline("(npc) ");
 
 	if (line_read && *line_read) 
 	{
@@ -49,7 +52,7 @@ static char* rl_gets()
 
 static int cmd_c(char *args)
 {
-	cpu_exec(-1);
+	sim_step(-1);
 	return 0;
 }
 
@@ -57,7 +60,7 @@ static int cmd_s(char *args)
 {
 	char *steps = strtok(NULL, " ");
 	uint64_t n = steps ? atoi(steps) : 1;
-	cpu_exec(n);
+	sim_step(n);
 	return 0;
 }
 
@@ -71,10 +74,6 @@ static int cmd_info(char *args)
 	else if(strcmp(arg, "r") == 0 || strcmp(arg, "reg") == 0)
 	{
 		isa_reg_display();
-	}
-	else if(strcmp(arg, "w") == 0 || strcmp(arg, "watchpoints") == 0)
-	{
-		print_watchpoints();
 	}
 	else
 	{
@@ -135,7 +134,6 @@ static int cmd_p(char *args)
 	if(success)
 	{
 		printf("0x%x\n", result);
-		printf("%u\n", result);
 	}
 	else
 	{
@@ -205,7 +203,7 @@ static int cmd_b(char *args)
 
 static int cmd_q(char *args) 
 {
-	nemu_state.state = NEMU_QUIT;
+	npc_state.state = NPC_QUIT;
 	return -1;
 }
 
@@ -230,8 +228,6 @@ static struct {
 	/* TODO: Add more commands */
 
 };
-
-#define NR_CMD ARRLEN(cmd_table)
 
 static int cmd_help(char *args) {
   /* extract the first argument */
@@ -258,6 +254,7 @@ static int cmd_help(char *args) {
 
 void sdb_set_batch_mode() {
   is_batch_mode = true;
+  stdout_write("Batch mode enabled");
 }
 
 void sdb_mainloop() {
@@ -266,6 +263,7 @@ void sdb_mainloop() {
     return;
   }
 
+  // get conmandlines
   for (char *str; (str = rl_gets()) != NULL; ) {
     char *str_end = str + strlen(str);
 
@@ -298,10 +296,8 @@ void sdb_mainloop() {
   }
 }
 
-void init_sdb() {
-  /* Compile the regular expressions. */
-  init_regex();
-
-  /* Initialize the watchpoint pool. */
-  init_wp_pool();
+void init_sdb()
+{
+	init_regex();
+	init_wp_pool();
 }
