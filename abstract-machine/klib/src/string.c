@@ -24,7 +24,7 @@ char *strcpy(char *dst, const char *src)
 	return ret;
 }
 
-
+// copied from Linux Programmer's Manual
 char *strncpy(char *dst, const char *src, size_t n)
 {
         size_t i;
@@ -98,6 +98,7 @@ void *memcpy(void *out, const void *in, size_t n)
 {
 	uint8_t *p = out;
 	const uint8_t *q = in;
+	// memory overlap: UB
 	while(n--)
 		*p++ = *q++;
 	return out;

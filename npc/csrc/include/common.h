@@ -1,7 +1,5 @@
 #pragma once
 
-#include "autoconf.h"
-
 #include <iostream>
 #include <fstream>
 #include <cassert>
@@ -22,9 +20,9 @@ using word_t = uint32_t;
 using paddr_t = word_t;
 using vaddr_t = word_t;
 
-using NPC_state = struct CPU_state{
+using NPC_state = struct NPC_state{
 	NPC_STATE state;
-    int halt_ret;
+	int halt_ret;
 };
 
 using CPU_state = struct CPU_state{

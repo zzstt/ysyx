@@ -43,17 +43,13 @@ SRCS = $(filter-out $(SRCS-BLACKLIST-y),$(SRCS-y))
 ifneq ($(CONFIG_CC),)
 CC = $(call remove_quote,$(CONFIG_CC))
 endif
-
 CFLAGS_BUILD += $(call remove_quote,$(CONFIG_CC_OPT))
 CFLAGS_BUILD += $(if $(CONFIG_CC_LTO),-flto,)
-CFLAGS_BUILD += $(if $(CONFIG_CC_DEBUG),-Og -g3,)
+CFLAGS_BUILD += $(if $(CONFIG_CC_DEBUG),-Og -ggdb3,)
 CFLAGS_BUILD += $(if $(CONFIG_CC_ASAN),-fsanitize=address,)
 CFLAGS_TRACE += -DITRACE_COND=$(if $(CONFIG_ITRACE_COND),$(call remove_quote,$(CONFIG_ITRACE_COND)),true)
 CFLAGS  += $(CFLAGS_BUILD) $(CFLAGS_TRACE) -D__GUEST_ISA__=$(GUEST_ISA)
-
-LDFLAGS += $(filter-out -g% -O%,$(CFLAGS_BUILD))
-LDFLAGS += $(if $(CONFIG_CC_LTO),-flto,)
-LDFLAGS += $(if $(CONFIG_CC_ASAN),-fsanitize=address,)
+LDFLAGS += $(CFLAGS_BUILD)
 
 # Include rules for menuconfig
 include $(NEMU_HOME)/scripts/config.mk

@@ -135,7 +135,6 @@ static int cmd_p(char *args)
 	if(success)
 	{
 		printf("0x%x\n", result);
-		printf("%u\n", result);
 	}
 	else
 	{
@@ -266,6 +265,7 @@ void sdb_mainloop() {
     return;
   }
 
+  // get conmandlines
   for (char *str; (str = rl_gets()) != NULL; ) {
     char *str_end = str + strlen(str);
 

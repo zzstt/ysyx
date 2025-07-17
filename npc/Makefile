@@ -1,6 +1,3 @@
-include $(NPC_HOME)/config/include/config/auto.conf
--include $(NPC_HOME)/config/include/config/auto.conf.cmd
-
 TOP ?= Top
 
 PLATFORM ?= verilator
@@ -10,8 +7,6 @@ BUILD_DIR = $(NPC_HOME)/build
 OBJ_DIR = $(BUILD_DIR)/obj_dir
 
 PRJ = playground
-
-CONFIG_DIR = $(NPC_HOME)/config
 
 CSRC = $(NPC_HOME)/csrc
 
@@ -30,6 +25,9 @@ override ARGS += $(ARGS_DIFF)
 override ARGS += -b
 
 IMG ?=
+
+# constraint file
+
 
 # project source
 VSRCS = $(shell find $(abspath $(VSRC)) -name "*.v" -or -name "*.sv")
@@ -61,11 +59,6 @@ bsp:
 idea:
 	mill -i mill.idea.GenIdea/idea
 
-# get mconf and conf from nemu.tools after 'make menuconfig' in nemu
-# or you can install kconfig-frontends
-menuconfig:
-	make -C $(NPC_HOME)/config menuconfig
-
 clean:
 	-rm -rf $(BUILD_DIR)
 clean-verilog:
@@ -78,8 +71,7 @@ clean-verilog:
 LIBS += -lreadline
 LDFLAGS += $(LIBS)
 
-INC_PATH += $(CSRC)/include
-INC_PATH += $(CONFIG_DIR)/include/generated
+INC_PATH = $(CSRC)/include
 INCFLAGS = $(addprefix -I, $(INC_PATH))
 CXXFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(TOP)\""
 
