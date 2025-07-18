@@ -1,81 +1,73 @@
-TOP ?= Top
+# File: npc/Makefile
 
-PLATFORM ?= verilator
-
-BUILD_DIR = $(NPC_HOME)/build
-
-OBJ_DIR = $(BUILD_DIR)/obj_dir
-
-PRJ = playground
-
-CSRC = $(NPC_HOME)/csrc
-
-VSRC = $(NPC_HOME)/vsrc
-
-NXDC_FILES = $(NPC_HOME)/constr/top.nxdc
-
+# 基本配置
 VERILATOR = verilator
+TOP_MODULE = top
+VSRC_DIR = vsrc
+CSRC_DIR = csrc
+OBJ_DIR = obj_dir
+INCLUDE_DIR = include  # 头文件目录
 
-VERILATOR_FLAGS = --cc --exe --build -j 0 -Wall -Wno-PINCONNECTEMPTY -Wno-UNUSEDSIGNAL
+# 自动查找源文件 - 使用 shell find 替代 wildcard
+VERILOG_SOURCES = $(shell find $(VSRC_DIR) -name "*.v" 2>/dev/null)
+VERILOG_HEADERS = $(shell find $(INCLUDE_DIR) -name "*.vh" 2>/dev/null)  # 只查找 include 目录
+CPP_HEADERS = $(shell find $(INCLUDE_DIR) -name "*.h" 2>/dev/null)  # C++ 头文件
+CSRC_SOURCES = $(shell find $(CSRC_DIR) -name "*.cpp" 2>/dev/null)
 
-ARGS_DIFF = --diff=$(shell find $(NEMU_HOME)/build/ -type f -name "*-so")
+# 获取包含路径
+INCLUDE_PATHS = -I$(VSRC_DIR) -I$(INCLUDE_DIR)
+CFLAGS = -I$(CSRC_DIR) -I$(INCLUDE_DIR)
 
-override ARGS ?= --log=$(shell pwd)/build/npc-log.txt
-override ARGS += $(ARGS_DIFF)
-override ARGS += -b
+# Verilator 编译选项
+VERILATOR_FLAGS = --trace-fst --timescale 1ps/1ps --cc
+VERILATOR_FLAGS += --exe
+# 添加头文件搜索路径
+VERILATOR_FLAGS += $(INCLUDE_PATHS)  # Verilog 头文件路径
+VERILATOR_FLAGS += -CFLAGS "$(CFLAGS)"  # C++ 头文件路径
+VERILATOR_FLAGS += -LDFLAGS "-lz"
 
-IMG ?=
+# 调试目标 - 显示找到的文件
+debug:
+	@echo "INCLUDE_DIR: $(INCLUDE_DIR)"
+	@echo "VERILOG_HEADERS: $(VERILOG_HEADERS)"
+	@echo "CPP_HEADERS: $(CPP_HEADERS)"
+	@echo "CSRC_SOURCES: $(CSRC_SOURCES)"
+	@echo "VERILOG_SOURCES: $(VERILOG_SOURCES)"
 
-# constraint file
+# 默认目标
+all:
+	@echo "Use 'make sim' to run simulation"
+	@echo "Use 'make wave' to view waveforms"
+	@echo "Clean with 'make clean'"
+	@echo "Use 'make debug' to show file paths"
 
+# 仿真目标
+sim: $(OBJ_DIR)/V$(TOP_MODULE)
+	@echo "Starting simulation..."
+	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
+	@$(OBJ_DIR)/V$(TOP_MODULE) 2>&1 | tee sim.log
+	@echo "Simulation complete. Output in sim.log"
 
-# project source
-VSRCS = $(shell find $(abspath $(VSRC)) -name "*.v" -or -name "*.sv")
-CSRCS = $(shell find $(abspath $(CSRC)) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
+# 构建 Verilator 可执行文件
+$(OBJ_DIR)/V$(TOP_MODULE): $(VERILOG_SOURCES) $(VERILOG_HEADERS) $(CSRC_SOURCES) $(CPP_HEADERS)
+	@echo "Building with Verilator..."
+	@echo "Verilog headers found: $(words $(VERILOG_HEADERS)) files"
+	@echo "C++ headers found: $(words $(CPP_HEADERS)) files"
+	$(VERILATOR) $(VERILATOR_FLAGS) \
+		--top-module $(TOP_MODULE) \
+		$(VERILOG_SOURCES) \
+		$(CSRC_SOURCES)
+	$(MAKE) -C $(OBJ_DIR) -f V$(TOP_MODULE).mk
 
+# 查看波形
+wave:
+	gtkwave wave.fst &
 
-$(shell mkdir -p $(BUILD_DIR))
-
-
-test:
-	mill -i $(PRJ).test
-
-verilog:
-# $(call git_commit, "generate verilog")
-	mill -i $(PRJ).runMain Elaborate --target-dir $(VSRC) --split-verilog
-
-help:
-	mill -i $(PRJ).runMain Elaborate --help
-
-reformat:
-	mill -i __.reformat
-
-checkformat:
-	mill -i __.checkFormat
-
-bsp:
-	mill -i mill.bsp.BSP/install
-
-idea:
-	mill -i mill.idea.GenIdea/idea
-
+# 清理
 clean:
-	-rm -rf $(BUILD_DIR)
-clean-verilog:
-	-rm -rf $(VSRC)
+	rm -rf $(OBJ_DIR) sim.log wave.fst wave.vcd
 
-.PHONY: test verilog help reformat checkformat clean
+# 包含上级 Makefile
+include ../Makefile
 
-
-# rules for verilator
-LIBS += -lreadline
-LDFLAGS += $(LIBS)
-
-INC_PATH = $(CSRC)/include
-INCFLAGS = $(addprefix -I, $(INC_PATH))
-CXXFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(TOP)\""
-
--include $(NPC_HOME)/scripts/$(PLATFORM)-sim.mk
-
-
--include ../Makefile
+.PHONY: all sim wave clean debug
