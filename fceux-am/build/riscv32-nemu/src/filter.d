@@ -1,0 +1,23 @@
+/home/csy/Desktop/ysyx-workbench/fceux/build/riscv32-nemu/src/filter.o: \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/filter.cpp \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/types.h \
+ /home/csy/Desktop/ysyx-workbench/abstract-machine/klib/include/klib.h \
+ /home/csy/Desktop/ysyx-workbench/abstract-machine/am/include/am.h \
+ /home/csy/Desktop/ysyx-workbench/abstract-machine/am/include/arch/riscv.h \
+ /home/csy/Desktop/ysyx-workbench/abstract-machine/am/include/amdev.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/sound.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/x6502.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/x6502struct.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/fceu.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/git.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/utils/md5.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/utils/../types.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/utils/valuearray.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/filter.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/fcoeffs.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/fir/c44100ntsc.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/fir/c48000ntsc.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/fir/c96000ntsc.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/fir/c44100pal.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/fir/c48000pal.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/fir/c96000pal.h

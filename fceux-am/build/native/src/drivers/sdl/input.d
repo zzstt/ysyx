@@ -1,0 +1,22 @@
+/home/csy/Desktop/ysyx-workbench/fceux-am/build/native/src/drivers/sdl/input.o: \
+ /home/csy/Desktop/ysyx-workbench/fceux-am/src/drivers/sdl/input.cpp \
+ /home/csy/Desktop/ysyx-workbench/abstract-machine/klib/include/klib-macros.h \
+ /home/csy/Desktop/ysyx-workbench/fceux-am/src/drivers/sdl/main.h \
+ /home/csy/Desktop/ysyx-workbench/fceux-am/src/drivers/sdl/../../driver.h \
+ /home/csy/Desktop/ysyx-workbench/fceux-am/src/drivers/sdl/../../types.h \
+ /home/csy/Desktop/ysyx-workbench/abstract-machine/klib/include/klib.h \
+ /home/csy/Desktop/ysyx-workbench/abstract-machine/am/include/am.h \
+ /home/csy/Desktop/ysyx-workbench/abstract-machine/am/include/arch/native.h \
+ /home/csy/Desktop/ysyx-workbench/abstract-machine/am/include/amdev.h \
+ /home/csy/Desktop/ysyx-workbench/fceux-am/src/drivers/sdl/../../git.h \
+ /home/csy/Desktop/ysyx-workbench/fceux-am/src/drivers/sdl/../../utils/md5.h \
+ /home/csy/Desktop/ysyx-workbench/fceux-am/src/drivers/sdl/../../utils/../types.h \
+ /home/csy/Desktop/ysyx-workbench/fceux-am/src/drivers/sdl/../../utils/valuearray.h \
+ /home/csy/Desktop/ysyx-workbench/fceux-am/src/drivers/sdl/../../file.h \
+ /home/csy/Desktop/ysyx-workbench/fceux-am/src/drivers/sdl/../../emufile.h \
+ /home/csy/Desktop/ysyx-workbench/fceux-am/src/drivers/sdl/dface.h \
+ /home/csy/Desktop/ysyx-workbench/fceux-am/src/drivers/sdl/input.h \
+ /home/csy/Desktop/ysyx-workbench/fceux-am/src/drivers/sdl/sdl-video.h \
+ /home/csy/Desktop/ysyx-workbench/fceux-am/src/drivers/sdl/sdl.h \
+ /home/csy/Desktop/ysyx-workbench/fceux-am/src/drivers/sdl/../../fceu.h \
+ /home/csy/Desktop/ysyx-workbench/fceux-am/src/drivers/sdl/keyscan.h

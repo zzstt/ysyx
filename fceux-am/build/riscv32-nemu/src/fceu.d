@@ -1,0 +1,34 @@
+/home/csy/Desktop/ysyx-workbench/fceux/build/riscv32-nemu/src/fceu.o: \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/fceu.cpp \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/config.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/types.h \
+ /home/csy/Desktop/ysyx-workbench/abstract-machine/klib/include/klib.h \
+ /home/csy/Desktop/ysyx-workbench/abstract-machine/am/include/am.h \
+ /home/csy/Desktop/ysyx-workbench/abstract-machine/am/include/arch/riscv.h \
+ /home/csy/Desktop/ysyx-workbench/abstract-machine/am/include/amdev.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/x6502.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/x6502struct.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/fceu.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/git.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/utils/md5.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/utils/../types.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/utils/valuearray.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/ppu.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/sound.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/file.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/emufile.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/utils/memory.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/cart.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/ines.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/palette.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/state.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/video.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/input.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/drivers/sdl/sdl.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/drivers/sdl/main.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/drivers/sdl/../../driver.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/drivers/sdl/../../types.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/drivers/sdl/../../git.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/drivers/sdl/../../file.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/drivers/sdl/dface.h \
+ /home/csy/Desktop/ysyx-workbench/fceux/src/drivers/sdl/input.h
