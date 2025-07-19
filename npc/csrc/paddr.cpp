@@ -3,12 +3,12 @@
 #include "../include/debug.h"
 #include "../include/common.h"
 #include "../include/paddr.h"
-#include "Vtop.h" //仿真模型的头文件，由top.v生成，如果顶层文件名更改则也需要更改
+#include "Vtop.h"
 #include "verilated.h"
 
 #if   defined(CONFIG_PMEM_MALLOC)
 static uint8_t *pmem = NULL;
-#else // CONFIG_PMEM_GARRAY
+#else
 #endif
 static uint8_t pmem[PMEM_SIZE] PG_ALIGN = {};
 

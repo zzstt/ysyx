@@ -60,8 +60,6 @@
 // test if a boolean macro is defined to 0
 #define ISZERO(macro) MUXZERO(macro, 1, 0)
 // test if a macro of ANY type is defined
-// NOTE1: it ONLY works inside a function, since it calls `strcmp()`
-// NOTE2: macros defined to themselves (#define A A) will get wrong results
 #define isdef(macro) (strcmp("" #macro, "" str(macro)) != 0)
 
 // simplification for conditional compilation
@@ -85,7 +83,7 @@
 
 #define BITMASK(bits) ((1ull << (bits)) - 1)
 #define BITS(x, hi, lo) ((long int)((x) >> (lo)) & (long int)BITMASK((hi) - (lo) + 1)) // similar to x[hi:lo] in verilog
-// 强制转化为long int 进行运算
+
 #define SEXT(x, len) ({ struct { int64_t n : len; } __x = { .n = x }; (uint64_t)__x.n; })
 
 #define ROUNDUP(a, sz)   ((((uintptr_t)a) + (sz) - 1) & ~((sz) - 1))
