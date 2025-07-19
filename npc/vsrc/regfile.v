@@ -1,27 +1,23 @@
-module regfile(
-    input  wire        clk,
-    // READ PORT 1
-    input  wire [ 4:0] raddr1,
-    output wire [31:0] rdata1,
-    // READ PORT 2
-    input  wire [ 4:0] raddr2,
-    output wire [31:0] rdata2,
-    // WRITE PORT
-    input  wire        we,       //write enable, HIGH valid
-    input  wire [ 4:0] waddr,
-    input  wire [31:0] wdata
+`timescale 10 ns / 1 ns
+`define DATA_WIDTH 32
+`define ADDR_WIDTH 5
+
+module reg_file(
+    input                    clk,
+    input  [`ADDR_WIDTH - 1:0] waddr,
+    input  [`ADDR_WIDTH - 1:0] raddr1,
+    input  [`ADDR_WIDTH - 1:0] raddr2,
+    input                    wen,
+    input  [`DATA_WIDTH - 1:0] wdata,
+    output [`DATA_WIDTH - 1:0] rdata1,
+    output [`DATA_WIDTH - 1:0] rdata2
 );
-reg [31:0] rf[31:0];
 
-//WRITE
-always @(posedge clk) begin
-    if (we) rf[waddr] <= wdata;
-end
-
-//READ OUT 1
-assign rdata1 = (raddr1==5'b0) ? 32'b0 : rf[raddr1];
-
-//READ OUT 2
-assign rdata2 = (raddr2==5'b0) ? 32'b0 : rf[raddr2];
-
+    reg [`DATA_WIDTH -1:0] r[`DATA_WIDTH-1:0];
+    always @(posedge clk) begin
+        if(((waddr != 5'd0) && wen))
+            r[waddr] <= wdata;
+    end
+    assign rdata1 = (raddr1 != 5'd0) ? r[raddr1] : 32'd0;
+    assign rdata2 = (raddr2 != 5'd0) ? r[raddr2] : 32'd0;
 endmodule
